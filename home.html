@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block content %}
+<section class="hero"><h1>Fresh groceries, delivered to your door</h1><p>Choose your products and place your order online.</p></section>
+<h2>Our products</h2><div class="grid">{% for p in products %}<article class="product">
+{% if p.image %}<img src="{{ url_for('static', filename='uploads/' + p.image) }}" alt="{{ p.name }}">{% else %}<div class="placeholder">Product photo</div>{% endif %}
+<div class="pad"><small>{{ p.category }}</small><h3>{{ p.name }}</h3><p>{{ p.unit }}</p>
+{% if p.discount_price and p.discount_price < p.price %}<strong class="price">₹{{ '%.2f'|format(p.discount_price) }}</strong> <del>₹{{ '%.2f'|format(p.price) }}</del><span class="offer">Discount</span>
+{% else %}<strong class="price">₹{{ '%.2f'|format(p.price) }}</strong>{% endif %}
+<p class="stock">{{ p.stock }} available</p><form method="post" action="{{ url_for('add_to_cart', product_id=p.id) }}"><button {% if p.stock < 1 %}disabled{% endif %}>Add to cart</button></form></div></article>{% else %}<p>No products added yet. Shop owner: open Owner login to add products.</p>{% endfor %}</div>{% endblock %}
