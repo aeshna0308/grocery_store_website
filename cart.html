@@ -1,0 +1,3 @@
+{% extends "base.html" %}{% block content %}<h1>Your cart</h1>{% if items %}<form method="post"><div class="panel">
+{% for item in items %}<div class="cartrow"><div><b>{{ item.product.name }}</b><p>₹{{ '%.2f'|format(item.unit_price) }} each</p></div><label>Quantity <input type="number" min="0" max="99" name="qty_{{ item.product.id }}" value="{{ item.quantity }}"></label><b>₹{{ '%.2f'|format(item.line_total) }}</b></div>{% endfor %}
+<p class="total">Total: ₹{{ '%.2f'|format(total) }}</p><button type="submit" class="secondary">Update cart (use 0 to remove)</button> <a class="button" href="{{ url_for('checkout') }}">Proceed to checkout</a></div></form>{% else %}<p>Your cart is empty. <a href="{{ url_for('home') }}">Continue shopping</a>.</p>{% endif %}{% endblock %}
