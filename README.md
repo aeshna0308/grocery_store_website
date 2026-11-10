@@ -1,152 +1,37 @@
-# 🛒 Grocery Store Website
+# Grocery Store Website (Flask + SQLite)
 
-A simple online grocery shopping website built using **Python Flask, SQLite, HTML, CSS, and Bootstrap-style responsive design**.
+## Included
+- Customer product catalogue with product images, original price and optional discount price
+- Add to cart, edit quantities, remove items and see total
+- Checkout with name, 10-digit mobile, address and payment selection
+- Owner login and dashboard
+- Add/edit/delete products, upload product images, update stock and prices
+- View orders and update order status
 
-This project helps a local grocery store sell products online. Customers can browse products, add items to their cart, place orders, and choose a payment method.
+## Run locally (free)
+1. Install Python 3.10 or newer.
+2. Open a terminal in this project folder.
+3. Create and activate a virtual environment (optional but recommended):
+   - Windows: `py -m venv .venv` then `.venv\\Scripts\\activate`
+   - macOS/Linux: `python3 -m venv .venv` then `source .venv/bin/activate`
+4. Install dependencies: `pip install -r requirements.txt`
+5. Start: `python app.py`
+6. Open: http://127.0.0.1:5000
 
-## ✨ Features
-
-### Customer Features
-- View grocery products.
-- View product images and prices.
-- See discounted prices.
-- Add products to cart.
-- Increase or decrease product quantities.
-- Remove products from cart.
-- View total cart amount.
-- Enter name, mobile number, and delivery address.
-- Choose Cash on Delivery or UPI on Delivery.
-- Place grocery orders.
-
-### Admin Features
-- Admin login.
-- Add new grocery products.
-- Edit product details.
-- Delete products.
-- Upload product images.
-- Upload shop logo.
-- Manage product prices and discounts.
-- Manage product stock.
-- View customer orders.
-- Update order status.
-
-## 🛠️ Technologies Used
-
-- Python
-- Flask
-- SQLite
-- HTML
-- CSS
-- JavaScript
-
-## 📁 Project Structure
-
-```text
-grocery_store_website/
-│
-├── app.py
-├── requirements.txt
-├── README.md
-│
-├── templates/
-│   ├── base.html
-│   ├── home.html
-│   ├── cart.html
-│   ├── checkout.html
-│   ├── success.html
-│   ├── admin_login.html
-│   ├── admin.html
-│   ├── product_form.html
-│   └── order.html
-│
-└── static/
-    ├── style.css
-    └── uploads/
-```
-
-## 💻 Installation and Setup
-
-### 1. Install Python
-
-Download Python from:
-
-https://www.python.org/downloads/
-
-### 2. Clone the Repository
-
-```bash
-git clone https://github.com/aeshna0308/grocery_store_website.git
-```
-
-### 3. Open the Project Folder
-
-```bash
-cd grocery_store_website
-```
-
-### 4. Install Required Packages
-
-```bash
-pip install -r requirements.txt
-```
-
-### 5. Run the Website
-
-```bash
-python app.py
-```
-
-### 6. Open in Your Browser
-
-```text
-http://127.0.0.1:5000
-```
-
-## 🔐 Admin Login
-
-For the initial demo setup:
-
+## Demo owner login
 - Username: `admin`
 - Password: `ChangeMe123!`
 
-**Important:** Change the default admin credentials and Flask secret key before deploying the website publicly. Configure credentials through environment variables.
+Change the default credentials before deployment. You can set environment variables:
+- `ADMIN_USERNAME`
+- `ADMIN_PASSWORD`
+- `SECRET_KEY` (use a long random secret)
+- `SHOP_NAME`
 
-## 💳 Payment Methods
+Windows PowerShell example:
+`$env:ADMIN_USERNAME="youradmin"; $env:ADMIN_PASSWORD="your-strong-password"; $env:SECRET_KEY="a-long-random-secret"; $env:SHOP_NAME="Your Shop Name"; python app.py`
 
-The demo supports:
-- Cash on Delivery
-- UPI on Delivery
+## Important before going public
+This is a learning/demo starter, not a production-hardened store. It uses SQLite and local image storage. Before public launch, add CSRF protection, HTTPS, proper admin password hashing stored in a database, backups, rate limiting, order notifications, privacy policy, and production hosting. UPI on delivery is only a selected payment option; no online payment gateway is connected. Do not collect card/UPI PIN details on this site. Use a payment gateway provider for actual online payments.
 
-Note: This project does not currently include an online payment gateway. UPI on Delivery is only a payment selection, not an integrated payment transaction.
-
-## 🚀 Future Improvements
-
-- Online payment gateway integration.
-- Customer registration and login.
-- Live order tracking.
-- Delivery partner application.
-- WhatsApp order notifications.
-- Product search and filters.
-- Delivery charges and minimum order amount.
-- Persistent database and image storage.
-- Mobile-friendly customer experience.
-
-## ⚠️ Important Deployment Notes
-
-This project is a beginner-friendly demo and is not yet production-ready.
-
-Before accepting real customer orders:
-- Secure the admin login.
-- Add CSRF protection and input validation.
-- Use HTTPS.
-- Configure persistent database and image storage.
-- Back up customer orders.
-- Add a privacy policy and appropriate data protection measures.
-
-## 👩‍💻 Project Purpose
-
-This project is created to help a local grocery shop start selling groceries online and build its own digital shopping platform.
-
----
-
-**Built with ❤️ using Python Flask**
+Upload your shop logo from Owner dashboard > Shop logo. It appears beside the shop name in the website header.
