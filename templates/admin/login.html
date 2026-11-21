@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Shopkeeper login{% endblock %}
+
+{% block content %}
+
+<div class="login-wrap">
+
+    <form class="panel form-panel" method="post">
+
+        <input
+            type="hidden"
+            name="csrf_token"
+            value="{{ csrf_token() }}"
+        >
+
+        <span class="eyebrow">SHOP MANAGEMENT</span>
+
+        <h1>Shopkeeper login</h1>
+
+        <label>
+            Username
+            <input
+                name="username"
+                required
+                autocomplete="username"
+            >
+        </label>
+
+        <label>
+            Password
+            <input
+                type="password"
+                name="password"
+                required
+                autocomplete="current-password"
+            >
+        </label>
+
+        <button class="btn full">
+            Login securely
+        </button>
+
+        <p class="muted">
+            Change the demo credentials before public deployment.
+        </p>
+
+    </form>
+
+</div>
+
+{% endblock %}
