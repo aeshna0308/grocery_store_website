@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}
+Order placed | {{ shop_name }}
+{% endblock %}
+
+{% block content %}
+
+<div class="empty success-page">
+
+    <div>✓</div>
+
+    <span class="eyebrow">ORDER RECEIVED</span>
+
+    <h1>Thank you for shopping!</h1>
+
+    <p>
+        Your order number is <b>#{{ order.id }}</b>.
+        The shopkeeper will contact you to confirm delivery.
+    </p>
+
+    <p>
+        Payment method:
+        <b>{{ order.payment_method }}</b>
+        · Payment status:
+        <b>{{ order.payment_status }}</b>
+    </p>
+
+    {% if order.payment_method == "UPI" %}
+
+        {% if upi_link %}
+
+            <a class="btn" href="{{ upi_link }}">
+                Open UPI app to pay ₹{{ '%.2f'|format(order.total) }}
+            </a>
+
+            <p class="muted">
+                After payment, share the transaction reference
+                with the shopkeeper. Your order is not marked
+                paid automatically.
+            </p>
+
+        {% elif upi_id %}
+
+            <p>
+                Pay to UPI ID: <b>{{ upi_id }}</b>.
+                Share the transaction reference with the shopkeeper.
+            </p>
+
+        {% else %}
+
+            <p class="muted">
+                The shop has not configured its UPI ID yet.
+                Contact the shopkeeper for payment details.
+            </p>
+
+        {% endif %}
+
+    {% endif %}
+
+    <a class="btn btn-outline" href="{{ url_for('home') }}">
+        Continue shopping
+    </a>
+
+</div>
+
+{% endblock %}
