@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Admin dashboard{% endblock %}
+
+{% block content %}
+
+<div class="admin-head">
+
+    <div>
+        <span class="eyebrow">SHOP MANAGEMENT</span>
+        <h1>Dashboard</h1>
+    </div>
+
+    <div>
+        <a
+            class="btn btn-small"
+            href="{{ url_for('admin.new_product') }}"
+        >
+            + Add product
+        </a>
+
+        <a
+            class="btn btn-outline btn-small"
+            href="{{ url_for('admin.orders') }}"
+        >
+            Manage orders
+        </a>
+
+        <a href="{{ url_for('admin.logout') }}">
+            Logout
+        </a>
+    </div>
+
+</div>
+
+<div class="stats">
+
+    <div class="stat">
+        <small>Total products</small>
+        <b>{{ products|length }}</b>
+    </div>
+
+    <div class="stat">
+        <small>Orders shown</small>
+        <b>{{ orders|length }}</b>
+    </div>
+
+    <div class="stat">
+        <small>Low stock</small>
+        <b>
+            {{ products|selectattr('stock', 'lt', 5)|list|length }}
+        </b>
+    </div>
+
+</div>
+
+<div class="section-head">
+    <h2>Products</h2>
+</div>
+
+<div class="table-wrap">
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Visibility</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for p in products %}
+
+            <tr>
+
+                <td>
+                    {{ p.name }}
+                    <small>{{ p.category }}</small>
+                </td>
+
+                <td>
+                    ₹{{ '%.2f'|format(p.selling_price) }}
+                </td>
+
+                <td>{{ p.stock }}</td>
+
+                <td>
+                    {{ 'Visible' if p.is_active else 'Hidden' }}
+                </td>
+
+                <td>
+
+                    <a href="{{ url_for('admin.edit_product', product_id=p.id) }}">
+                        Edit
+                    </a>
+
+                    ·
+
+                    <form
+                        class="inline-form"
+                        method="post"
+                        action="{{ url_for('admin.delete_product', product_id=p.id) }}"
+                    >
+
+                        <input
+                            type="hidden"
+                            name="csrf_token"
+                            value="{{ csrf_token() }}"
+                        >
+
+                        <button
+                            class="link-button"
+                            onclick="return confirm('Hide this product?')"
+                        >
+                            Hide
+                        </button>
+
+                    </form>
+
+                </td>
+
+            </tr>
+
+            {% else %}
+
+            <tr>
+                <td colspan="5">No products added yet.</td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}
