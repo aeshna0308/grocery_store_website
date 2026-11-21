@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ shop_name }} | Fresh groceries
+{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+    <div>
+        <span class="eyebrow">
+            YOUR NEIGHBOURHOOD GROCERY STORE
+        </span>
+
+        <h1>
+            Fresh essentials.<br>
+            <em>Right at your door.</em>
+        </h1>
+
+        <p>
+            Shop daily groceries, fruits, vegetables
+            and household essentials in a few clicks.
+        </p>
+
+        <a class="btn" href="{{ url_for('products.listing') }}">
+            Explore products
+        </a>
+    </div>
+
+    <div class="hero-art">
+        🥑<span>🥦</span><b>🍊</b><i>🥕</i>
+    </div>
+
+</section>
+
+<div class="section-head">
+    <div>
+        <span class="eyebrow">HANDPICKED FOR YOU</span>
+        <h2>Popular products</h2>
+    </div>
+
+    <a href="{{ url_for('products.listing') }}">
+        View all →
+    </a>
+</div>
+
+<div class="product-grid">
+
+    {% for p in products[:8] %}
+        {% include "_product_card.html" %}
+    {% else %}
+        <p>
+            No products yet. The shopkeeper can add
+            products from the admin panel.
+        </p>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
