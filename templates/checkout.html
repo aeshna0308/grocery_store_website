@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}
+Checkout | {{ shop_name }}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+    <span class="eyebrow">ALMOST THERE</span>
+    <h1>Delivery details</h1>
+    <p>Where should we deliver your groceries?</p>
+</div>
+
+<div class="checkout-layout">
+
+    <form class="panel form-panel" method="post">
+
+        <input
+            type="hidden"
+            name="csrf_token"
+            value="{{ csrf_token() }}"
+        >
+
+        <label>
+            Full name
+            <input
+                name="name"
+                required
+                maxlength="120"
+                placeholder="Your name"
+            >
+        </label>
+
+        <label>
+            Mobile number
+            <input
+                name="mobile"
+                required
+                inputmode="numeric"
+                pattern="[6-9][0-9]{9}"
+                maxlength="10"
+                placeholder="10-digit mobile number"
+            >
+        </label>
+
+        <label>
+            Full address
+            <textarea
+                name="address"
+                required
+                maxlength="500"
+                rows="3"
+                placeholder="House no., street, area"
+            ></textarea>
+        </label>
+
+        <label>
+            PIN code
+            <input
+                name="pincode"
+                required
+                inputmode="numeric"
+                pattern="[0-9]{6}"
+                maxlength="6"
+                placeholder="6-digit PIN code"
+            >
+        </label>
+
+        <h3>Choose payment method</h3>
+
+        <label class="radio-card">
+            <input
+                type="radio"
+                name="payment_method"
+                value="UPI"
+                required
+            >
+
+            <span>
+                <b>UPI payment</b>
+                <small>
+                    Pay using a UPI app. Payment remains pending
+                    until verified.
+                </small>
+            </span>
+        </label>
+
+        <label class="radio-card">
+            <input
+                type="radio"
+                name="payment_method"
+                value="COD"
+                required
+            >
+
+            <span>
+                <b>Cash on Delivery</b>
+                <small>Pay when your order arrives.</small>
+            </span>
+        </label>
+
+        <button class="btn full">Place order</button>
+
+    </form>
+
+    <aside class="summary">
+
+        <h3>Your order</h3>
+
+        {% for item in items %}
+
+        <div class="summary-line">
+            <span>
+                {{ item.product.name }} × {{ item.quantity }}
+            </span>
+
+            <b>₹{{ '%.2f'|format(item.line_total) }}</b>
+        </div>
+
+        {% endfor %}
+
+        <hr>
+
+        <div class="summary-line total">
+            <span>Total</span>
+            <b>₹{{ '%.2f'|format(total) }}</b>
+        </div>
+
+    </aside>
+
+</div>
+
+{% endblock %}
