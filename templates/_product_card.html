@@ -1,0 +1,67 @@
+<article class="product-card">
+
+    <div class="product-image">
+
+        {% if p.image %}
+            <img
+                src="{{ url_for('static', filename='uploads/' + p.image) }}"
+                alt="{{ p.name }}"
+            >
+        {% else %}
+            <span>🛍️</span>
+        {% endif %}
+
+        {% if p.discount_price %}
+            <small>OFFER</small>
+        {% endif %}
+
+    </div>
+
+    <div class="product-info">
+
+        <span class="category">{{ p.category }}</span>
+
+        <h3>{{ p.name }}</h3>
+
+        <p class="unit">Per {{ p.unit }}</p>
+
+        <div class="price-line">
+
+            <strong>
+                ₹{{ '%.2f'|format(p.selling_price) }}
+            </strong>
+
+            {% if p.discount_price %}
+                <del>
+                    ₹{{ '%.2f'|format(p.price) }}
+                </del>
+            {% endif %}
+
+        </div>
+
+        {% if p.stock > 0 %}
+
+            <form
+                method="post"
+                action="{{ url_for('cart.add', product_id=p.id) }}"
+            >
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                >
+
+                <button class="btn btn-small">
+                    Add to cart +
+                </button>
+            </form>
+
+        {% else %}
+
+            <span class="out-stock">Out of stock</span>
+
+        {% endif %}
+
+    </div>
+
+</article>
