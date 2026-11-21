@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}
+Products | {{ shop_name }}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+    <span class="eyebrow">THE STORE</span>
+    <h1>Shop groceries</h1>
+    <p>Find your everyday essentials.</p>
+</div>
+
+<form class="filters" method="get">
+
+    <input
+        name="q"
+        placeholder="Search products..."
+        value="{{ q }}"
+    >
+
+    <select name="category">
+        <option value="">All categories</option>
+
+        {% for c in categories %}
+            <option
+                value="{{ c }}"
+                {% if selected_category == c %}selected{% endif %}
+            >
+                {{ c }}
+            </option>
+        {% endfor %}
+
+    </select>
+
+    <button class="btn btn-small">Search</button>
+
+</form>
+
+<div class="product-grid">
+
+    {% for p in products %}
+        {% include "_product_card.html" %}
+    {% else %}
+        <p>No matching products found.</p>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
