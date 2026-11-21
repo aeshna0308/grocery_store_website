@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}
+Your cart | {{ shop_name }}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+    <span class="eyebrow">YOUR BAG</span>
+    <h1>Shopping cart</h1>
+    <p>Change quantities or remove items before checkout.</p>
+</div>
+
+{% if items %}
+
+<form method="post" action="{{ url_for('cart.update') }}">
+
+    <input
+        type="hidden"
+        name="csrf_token"
+        value="{{ csrf_token() }}"
+    >
+
+    <div class="cart-layout">
+
+        <div class="cart-list">
+
+            {% for item in items %}
+
+            <div class="cart-row">
+
+                <div class="cart-thumb">
+
+                    {% if item.product.image %}
+                        <img
+                            src="{{ url_for('static', filename='uploads/' + item.product.image) }}"
+                        >
+                    {% else %}
+                        🛍️
+                    {% endif %}
+
+                </div>
+
+                <div class="cart-desc">
+                    <b>{{ item.product.name }}</b>
+
+                    <small>
+                        ₹{{ '%.2f'|format(item.product.selling_price) }}
+                        / {{ item.product.unit }}
+                    </small>
+                </div>
+
+                <input
+                    class="qty-input"
+                    type="number"
+                    min="0"
+                    max="{{ item.product.stock }}"
+                    name="qty_{{ item.product.id }}"
+                    value="{{ item.quantity }}"
+                >
+
+                <strong>
+                    ₹{{ '%.2f'|format(item.line_total) }}
+                </strong>
+
+                <button
+                    class="link-button"
+                    type="submit"
+                    form="remove-{{ item.product.id }}"
+                >
+                    Remove
+                </button>
+
+            </div>
+
+            {% endfor %}
+
+            <button class="btn btn-outline">
+                Update cart
+            </button>
+
+        </div>
+
+        <aside class="summary">
+
+            <h3>Order summary</h3>
+
+            <div class="summary-line">
+                <span>Subtotal</span>
+                <b>₹{{ '%.2f'|format(total) }}</b>
+            </div>
+
+            <div class="summary-line">
+                <span>Delivery</span>
+                <span>Calculated by shop</span>
+            </div>
+
+            <hr>
+
+            <div class="summary-line total">
+                <span>Total</span>
+                <b>₹{{ '%.2f'|format(total) }}</b>
+            </div>
+
+            <a class="btn full" href="{{ url_for('checkout.checkout') }}">
+                Continue to checkout
+            </a>
+
+        </aside>
+
+    </div>
+
+</form>
+
+{% for item in items %}
+
+<form
+    id="remove-{{ item.product.id }}"
+    method="post"
+    action="{{ url_for('cart.remove', product_id=item.product.id) }}"
+>
+    <input
+        type="hidden"
+        name="csrf_token"
+        value="{{ csrf_token() }}"
+    >
+</form>
+
+{% endfor %}
+
+{% else %}
+
+<div class="empty">
+
+    <div>🧺</div>
+
+    <h2>Your cart is empty</h2>
+
+    <p>Add a few fresh favourites to get started.</p>
+
+    <a class="btn" href="{{ url_for('products.listing') }}">
+        Browse products
+    </a>
+
+</div>
+
+{% endif %}
+
+{% endblock %}
