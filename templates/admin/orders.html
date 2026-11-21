@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Manage orders{% endblock %}
+
+{% block content %}
+
+<div class="admin-head">
+
+    <div>
+        <span class="eyebrow">SHOP MANAGEMENT</span>
+        <h1>Customer orders</h1>
+    </div>
+
+    <a href="{{ url_for('admin.dashboard') }}">
+        ← Dashboard
+    </a>
+
+</div>
+
+{% for order in orders %}
+
+<section class="panel order-panel">
+
+    <div class="order-top">
+
+        <div>
+
+            <h3>
+                Order #{{ order.id }} · {{ order.customer_name }}
+            </h3>
+
+            <small>
+                {{ order.created_at.strftime('%d %b %Y, %I:%M %p') }}
+                · {{ order.mobile }}
+            </small>
+
+        </div>
+
+        <strong>
+            ₹{{ '%.2f'|format(order.total) }}
+        </strong>
+
+    </div>
+
+    <p>
+        {{ order.address }}, {{ order.pincode }}
+    </p>
+
+    <ul>
+
+        {% for item in order.items %}
+
+        <li>
+            {{ item.product_name }} × {{ item.quantity }}
+            {{ item.unit }}
+            — ₹{{ '%.2f'|format(item.line_total) }}
+        </li>
+
+        {% endfor %}
+
+    </ul>
+
+    <p>
+        Payment: <b>{{ order.payment_method }}</b>
+        · {{ order.payment_status }}
+    </p>
+
+    <div class="order-actions">
+
+        <form
+            method="post"
+            action="{{ url_for('admin.update_order', order_id=order.id) }}"
+        >
+
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+            >
+
+            <select name="status">
+
+                {% for s in [
+                    'New',
+                    'Accepted',
+                    'Packed',
+                    'Out for delivery',
+                    'Delivered',
+                    'Cancelled'
+                ] %}
+
+                <option {% if order.status == s %}selected{% endif %}>
+                    {{ s }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <button class="btn btn-small">
+                Update status
+            </button>
+
+        </form>
+
+        <form
+            method="post"
+            action="{{ url_for('admin.update_payment', order_id=order.id) }}"
+        >
+
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+            >
+
+            <select name="payment_status">
+
+                {% for s in ['Pending', 'Paid', 'Failed'] %}
+
+                <option {% if order.payment_status == s %}selected{% endif %}>
+                    {{ s }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <button class="btn btn-outline btn-small">
+                Update payment
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% else %}
+
+<p>No orders yet.</p>
+
+{% endfor %}
+
+{% endblock %}
